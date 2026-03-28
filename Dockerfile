@@ -1,13 +1,16 @@
-FROM python:3.10.20-alpine3.23
+FROM python:3.9.12-alpine3.15
 
 EXPOSE 5000
 
 WORKDIR /app
 
+ENV PYTHONUNBUFFERED=1
+
 COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN pip install -r requirements.txt
+COPY wsgi.py .
+COPY config.py .
+COPY application application
 
-COPY app.py .
-
-CMD [ "python", "app.py" ]
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "wsgi:app"]
