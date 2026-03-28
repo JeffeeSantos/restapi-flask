@@ -12,21 +12,21 @@ class TestApplication():
     @pytest.fixture
     def valid_user(self):
         return {
-            "first_name": "Mateus",
-            "last_name": "Muller",
-            "cpf": "641.396.500-28",
-            "email": "contato@mateusmuller.me",
-            "birth_date": "1996-09-10"
+            "first_name": "Jefferson",
+            "last_name": "Robert",
+            "cpf": "121.393.604-78",
+            "email": "contato@liso.com.br",
+            "birth_date": "1978-01-11"
         }
 
     @pytest.fixture
     def invalid_user(self):
         return {
-            "first_name": "Mateus",
-            "last_name": "Muller",
-            "cpf": "641.396.500-27",
-            "email": "contato@mateusmuller.me",
-            "birth_date": "1996-09-10"
+            "first_name": "Jefferson",
+            "last_name": "Santos",
+            "cpf": "631.395.302-67",
+            "email": "papa@gmail.com",
+            "birth_date": "1991-04-10"
         }
 
     def test_get_users(self, client):
@@ -45,13 +45,13 @@ class TestApplication():
     def test_get_user(self, client, valid_user, invalid_user):
         response = client.get('/user/%s' % valid_user["cpf"])
         assert response.status_code == 200
-        assert response.json[0]["first_name"] == "Mateus"
-        assert response.json[0]["last_name"] == "Muller"
-        assert response.json[0]["cpf"] == "641.396.500-28"
-        assert response.json[0]["email"] == "contato@mateusmuller.me"
+        assert response.json[0]["first_name"] == "Jefferson"
+        assert response.json[0]["last_name"] == "Santos"
+        assert response.json[0]["cpf"] == "631.395.302-67"
+        assert response.json[0]["email"] == "papa@gmail.com"
 
         birth_date = response.json[0]["birth_date"]["$date"]
-        assert birth_date == "1996-09-10T00:00:00Z"
+        assert birth_date == "1991-04-10T00:00:00Z"
 
         response = client.get('/user/%s' % invalid_user["cpf"])
         assert response.status_code == 400
