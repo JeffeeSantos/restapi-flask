@@ -26,6 +26,10 @@ jobs:
           pip install flake8 pytest
           pip install mongomock
 
+      - name: Install Heroku CLI
+        run: |
+        curl https://cli-assets.heroku.com/install.sh | sh
+
       - name: Lint (flake8)
         run: |
           flake8 . --count --show-source --statistics
